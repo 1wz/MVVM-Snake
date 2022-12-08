@@ -1,8 +1,4 @@
-﻿//using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using UnityEngine;
 
 namespace MVVM.View
@@ -10,24 +6,58 @@ namespace MVVM.View
 
     class Field
     {
-        Material[,] points;
-        public Field(int waight,int hight)
+        Renderer[,] points;
+        readonly Color DefoltColor=Color.black;
+        private int _height;
+        private int _width;
+        public Field(int width,int height)
         {
-            points = new Material[waight, hight];
+            points = new Renderer[width, height];
+            _height = height;
+            _width = width;
 
-            float maxY = (float)hight / 2 + 0.5f;
-            float maxX = (float)waight / 2 + 0.5f;
-            for(float y=-(float)hight / 2 + 0.5f;y<maxY;y++)
+            float YPosition = -(float)height / 2 + 0.5f;
+            float beginningXPosition = -(float)width / 2 + 0.5f;
+            for(int y=0;y<height;y++)
             {
-                for (float x = -(float)hight / 2 + 0.5f; y < maxX; x++)
+                float XPosition = beginningXPosition;
+                for (int x = 0; x < width; x++)
                 {
-                    GameObject point = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    point.transform.Translate(new Vector3(x, y));
-                    point.GetComponent<Renderer>().material;
+                    var point = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    point.transform.Translate(new Vector3(XPosition, YPosition));
+                    var renderer=point.GetComponent<Renderer>();
+                    renderer.material.color = DefoltColor;
+                    points[x, y] = renderer;
+                    XPosition++;
                 }
+                YPosition++;
             }
-            GameObject.CreatePrimitive(PrimitiveType.Cube).transform.position = new Vector2(-1, 0);
-            GameObject.CreatePrimitive(PrimitiveType.Cube).GetComponent<Renderer>().material.color = Color.yellow;
         }
+
+        public bool TrySetPoint(int x, int y,Color color)
+        {
+            if (!Contains(x, y)) return false;
+            points[x, y].material.color = color;
+            return true;
+        }
+        public bool TrySetPoint((int,int) point,Color color)
+        {
+            return TrySetPoint(point.Item1, point.Item2, color);
+        }
+        public  bool TryResetPoint(int x, int y)
+        {
+            if (!Contains(x, y)) return false;
+            points[x, y].material.color = DefoltColor;
+            return true;
+        }
+        public bool TryResetPoint((int,int) point)
+        {
+            return TryResetPoint(point.Item1, point.Item2);
+        }
+        private bool Contains(float x, float y)
+        {
+            return x < _width && x >= 0 && y < _height && y >= 0;
+        }
+
     }
 }

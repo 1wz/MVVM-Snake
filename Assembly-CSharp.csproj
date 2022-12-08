@@ -59,7 +59,11 @@
     <Compile Include="Assets\Code\Snake.cs" />
     <Compile Include="Assets\Code\Direction.cs" />
     <Compile Include="Assets\Code\Field.cs" />
-    <Compile Include="Assets\Code\TestRenderer.cs" />
+    <Compile Include="Assets\Code\ViewModel.cs" />
+    <Compile Include="Assets\Code\EventSender.cs" />
+    <Compile Include="Assets\Code\SimpleTimer.cs" />
+    <Compile Include="Assets\Code\InputObserver.cs" />
+    <Compile Include="Assets\Code\GameStarter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

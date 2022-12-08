@@ -9,7 +9,13 @@ namespace MVVM.Model
         private (int, int) head = (0, 0);
         public int length { get { return snake.Count; } }
 
-        public (int,int) Move(Direction direction)
+        public (int, int) Move(Direction direction)
+        {
+            head = GetNextPoint(direction);
+            snake.Enqueue(head);
+            return head;
+        }
+        public (int,int) GetNextPoint(Direction direction)
         {
             (int,int) step = direction switch
             {
@@ -19,10 +25,7 @@ namespace MVVM.Model
                 Direction.Left=>(-1,0)
             };
 
-            head = (head.Item1 + step.Item1, head.Item2 + step.Item2);
-            snake.Enqueue(head);
-            return head;
-
+            return (head.Item1 + step.Item1, head.Item2 + step.Item2);
         }
 
         public (int,int) CutOffTheTail()
